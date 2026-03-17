@@ -8,7 +8,13 @@ namespace dotNet
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Choisis le programme : 1 ou 2");
+            Console.WriteLine("Choisis le programme : 1, 2 ou 3");
+            Console.WriteLine("\n=== MENU ENTIER ===");
+            Console.WriteLine("1. Exercices de base");
+            Console.WriteLine("2. Tableau");
+            Console.WriteLine("3. Manipulation de matrices");
+            Console.Write("Choix : ");
+
             string choix = Console.ReadLine();
 
             switch (choix)
@@ -19,6 +25,9 @@ namespace dotNet
                 case "2":
                     Programme2.Lancer();
                     break;
+                case "3":
+                    Programme3.Lancer();
+                    break;
                 default:
                     Console.WriteLine("Choix invalide");
                     break;
@@ -26,6 +35,10 @@ namespace dotNet
         }
     }
 
+
+    // ─────────────────────────────────────────
+    // PROGRAMME 1 — Exercices de base
+    // ─────────────────────────────────────────
     class Programme1
     {
         public static void Lancer()
@@ -122,6 +135,9 @@ namespace dotNet
         }
     }
 
+    // ─────────────────────────────────────────
+    // PROGRAMME 2 — Tableau
+    // ─────────────────────────────────────────
     class Programme2
     {
         static int[] tableau = null;
@@ -206,6 +222,116 @@ namespace dotNet
         {
             Console.WriteLine("Min = " + tableau.Min());
             Console.WriteLine("Max = " + tableau.Max());
+        }
+    }
+
+    // ─────────────────────────────────────────
+    // PROGRAMME 3 — Manipulation de matrices
+    // ─────────────────────────────────────────
+    class Programme3
+    {
+        static int[,] matrice;
+
+        public static void Lancer()
+        {
+            Console.WriteLine("Programme 3 exécuté !");
+
+            Initialisation();
+
+            int choix;
+            do
+            {
+                Console.WriteLine("\n=== MENU MATRICE ===");
+                Console.WriteLine("1. Afficher");
+                Console.WriteLine("2. Inverser gauche → droite");
+                Console.WriteLine("3. Inverser droite → gauche (remettre)");
+                Console.WriteLine("0. Quitter");
+                Console.Write("Choix : ");
+                choix = int.Parse(Console.ReadLine());
+
+                switch (choix)
+                {
+                    case 1:
+                        Afficher();
+                        break;
+                    case 2:
+                        InverserHorizontale();
+                        Console.WriteLine("Inversion faite !");
+                        break;
+                    case 3:
+                        InverserHorizontale(); // même méthode pour revenir
+                        Console.WriteLine("Retour à l'état initial !");
+                        break;
+                    case 0:
+                        Console.WriteLine("Retour au menu principal.");
+                        break;
+                    default:
+                        Console.WriteLine("Choix invalide !");
+                        break;
+                }
+            } while (choix != 0);
+        }
+
+        static void Initialisation()
+        {
+            Console.WriteLine("1. Saisie manuelle");
+            Console.WriteLine("2. Génération aléatoire");
+            Console.Write("Choix : ");
+            int choix = int.Parse(Console.ReadLine());
+
+            Console.Write("Nombre de lignes : ");
+            int lignes = int.Parse(Console.ReadLine());
+
+            Console.Write("Nombre de colonnes : ");
+            int colonnes = int.Parse(Console.ReadLine());
+
+            matrice = new int[lignes, colonnes];
+
+            if (choix == 1)
+            {
+                for (int i = 0; i < lignes; i++)
+                    for (int j = 0; j < colonnes; j++)
+                    {
+                        Console.Write($"[{i},{j}] = ");
+                        matrice[i, j] = int.Parse(Console.ReadLine());
+                    }
+            }
+            else
+            {
+                Random rnd = new Random();
+                for (int i = 0; i < lignes; i++)
+                    for (int j = 0; j < colonnes; j++)
+                        matrice[i, j] = rnd.Next(0, 100);
+
+                Console.WriteLine("Matrice générée !");
+            }
+        }
+
+        static void Afficher()
+        {
+            int lignes = matrice.GetLength(0);
+            int colonnes = matrice.GetLength(1);
+
+            for (int i = 0; i < lignes; i++)
+            {
+                for (int j = 0; j < colonnes; j++)
+                    Console.Write(matrice[i, j] + "\t");
+                Console.WriteLine();
+            }
+        }
+
+        static void InverserHorizontale()
+        {
+            int lignes = matrice.GetLength(0);
+            int colonnes = matrice.GetLength(1);
+
+            for (int i = 0; i < lignes; i++)
+                for (int j = 0; j < colonnes / 2; j++)
+                {
+                    int temp = matrice[i, j];
+                    matrice[i, j] = matrice[i, colonnes - 1 - j];
+                    matrice[i, colonnes - 1 - j] = temp;
+                }
         }
     }
 }
