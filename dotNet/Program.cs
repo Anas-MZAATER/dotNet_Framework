@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace dotNet
 {
@@ -123,9 +124,88 @@ namespace dotNet
 
     class Programme2
     {
+        static int[] tableau = null;
+
         public static void Lancer()
         {
             Console.WriteLine("Programme 2 exécuté !");
+
+            Initialisation(); // étape obligatoire
+
+            int choix;
+            do
+            {
+                Console.WriteLine("\n=== MENU ENTIER ===");
+                Console.WriteLine("1. Afficher");
+                Console.WriteLine("2. Trier");
+                Console.WriteLine("3. Min / Max");
+                Console.WriteLine("0. Quitter");
+                Console.Write("Choix : ");
+
+                choix = int.Parse(Console.ReadLine());
+
+                switch (choix)
+                {
+                    case 1:
+                        Afficher();
+                        break;
+                    case 2:
+                        Trier();
+                        break;
+                    case 3:
+                        MinMax();
+                        break;
+                }
+
+            } while (choix != 0);
+        }
+
+        static void Initialisation()
+        {
+            Console.WriteLine("1. Remplissage manuel");
+            Console.WriteLine("2. Tableau aléatoire");
+            Console.Write("Choix : ");
+
+            int choix = int.Parse(Console.ReadLine());
+
+            Console.Write("Taille du tableau : ");
+            int n = int.Parse(Console.ReadLine());
+
+            tableau = new int[n];
+
+            if (choix == 1)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    Console.Write($"Valeur {i} : ");
+                    tableau[i] = int.Parse(Console.ReadLine());
+                }
+            }
+            else if (choix == 2)
+            {
+                Random rnd = new Random();
+                for (int i = 0; i < n; i++)
+                    tableau[i] = rnd.Next(0, 100);
+
+                Console.WriteLine("Tableau généré !");
+            }
+        }
+
+        static void Afficher()
+        {
+            Console.WriteLine(string.Join(" ", tableau));
+        }
+
+        static void Trier()
+        {
+            Array.Sort(tableau);
+            Console.WriteLine("Trié : " + string.Join(" ", tableau));
+        }
+
+        static void MinMax()
+        {
+            Console.WriteLine("Min = " + tableau.Min());
+            Console.WriteLine("Max = " + tableau.Max());
         }
     }
 }
