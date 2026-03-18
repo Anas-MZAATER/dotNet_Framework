@@ -8,11 +8,12 @@ namespace dotNet
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Choisis le programme : 1, 2 ou 3");
+            Console.WriteLine("Choisis le programme : ");
             Console.WriteLine("\n=== MENU ENTIER ===");
             Console.WriteLine("1. Exercices de base");
             Console.WriteLine("2. Tableau");
             Console.WriteLine("3. Manipulation de matrices");
+            Console.WriteLine("4. Tableau de chaînes");
             Console.Write("Choix : ");
 
             string choix = Console.ReadLine();
@@ -27,6 +28,9 @@ namespace dotNet
                     break;
                 case "3":
                     Programme3.Lancer();
+                    break;
+                case "4":
+                    Programme4.Lancer();
                     break;
                 default:
                     Console.WriteLine("Choix invalide");
@@ -332,6 +336,82 @@ namespace dotNet
                     matrice[i, j] = matrice[i, colonnes - 1 - j];
                     matrice[i, colonnes - 1 - j] = temp;
                 }
+        }
+    }
+    // ─────────────────────────────────────────
+    // PROGRAMME 4 — Tableau de chaînes + recherche
+    // ─────────────────────────────────────────
+    class Programme4
+    {
+        public static void Lancer()
+        {
+            Console.WriteLine("Programme 4 exécuté !");
+
+            List<char[]> tableaux = new List<char[]>();
+
+            // Saisie des chaînes
+            while (true)
+            {
+                Console.Write("Entrez une chaîne (tapez 'stop' pour arrêter) : ");
+                string input = Console.ReadLine();
+
+                if (input.ToLower() == "stop")
+                    break;
+
+                tableaux.Add(input.ToCharArray());
+            }
+
+            // Affichage
+            Console.WriteLine("\nContenu du tableau de tableaux :");
+            foreach (char[] tab in tableaux)
+            {
+                foreach (char c in tab)
+                    Console.Write(c + " ");
+                Console.WriteLine();
+            }
+
+            // Recherche répétée — ESC pour quitter à n'importe quelle étape
+            Console.WriteLine("\n(Appuyez sur ESC à tout moment pour quitter la recherche)");
+
+            while (true)
+            {
+                // ÉTAPE 1 — Saisie du caractère
+                Console.Write("\nEntrez un caractère à chercher (ESC pour quitter) : ");
+                ConsoleKeyInfo touche = Console.ReadKey();
+                Console.WriteLine();
+
+                if (touche.Key == ConsoleKey.Escape)
+                {
+                    Console.WriteLine("Fin des recherches. Retour au menu principal.");
+                    break;
+                }
+
+                char cible = touche.KeyChar;
+                bool trouve = false;
+
+                // ÉTAPE 2 — Recherche
+                for (int i = 0; i < tableaux.Count; i++)
+                    for (int j = 0; j < tableaux[i].Length; j++)
+                        if (tableaux[i][j] == cible)
+                        {
+                            Console.WriteLine($"  → Trouvé à la ligne {i}, colonne {j}");
+                            trouve = true;
+                        }
+
+                if (!trouve)
+                    Console.WriteLine($"  Caractère '{cible}' non trouvé.");
+
+                // ÉTAPE 3 — Continuer ou quitter (lettre trouvée ou non)
+                Console.Write("Appuyez sur une touche pour continuer, ou ESC pour quitter : ");
+                ConsoleKeyInfo suite = Console.ReadKey();
+                Console.WriteLine();
+
+                if (suite.Key == ConsoleKey.Escape)
+                {
+                    Console.WriteLine("Fin des recherches. Retour au menu principal.");
+                    break;
+                }
+            }
         }
     }
 }
